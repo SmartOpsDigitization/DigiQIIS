@@ -1,0 +1,93 @@
+
+ <form #checklistForm="ngForm">
+    <div class="container" style=" border: solid; padding: 10px;width: 100%;">
+        
+        
+        <div style="margin-left: 2%;margin-top: 1%;margin-bottom: 3%; color: teal;"><b>Kindly upload documents in pdf, docx, txt, png, xlsx, csv format only
+        </b></div>
+    
+            <div style="margin-top: 6%; border: solid; padding: 20px;"
+            *ngFor="let i of checklistdataarray; let unique = index ; let k = index ; let z=index">
+    
+            <div class="form-inline">
+                <h4>Account: &nbsp;</h4>{{i.accountName}} <h4>&nbsp;| Team:&nbsp;</h4> {{i.teamName}} <h4>&nbsp;| Checklist:
+                    &nbsp;</h4>{{i.processName}}
+            </div>
+    
+            <hr>
+    
+            <div class="form-group" *ngFor="let j of i.question;let x = index">
+               
+    
+                    <label style="width: 80%;">{{x+1}}) {{j.question}}</label>
+                  
+                        <div class="form-row">
+                                <div class="form-group col-md-8">
+                                     <select required class="form-control" [(ngModel)]="j.selectedAnswerId" 
+                                     #selectAnswerForm="ngModel" 
+                                     name="{{k+1}}+{{x}}" id="{{k+1}}+{{x}}" 
+                                     (change)="onSelect(i,j,i.checklistId, j.questionId)">
+                                         
+                                        <option *ngFor="let k of j.answer" [value]="k.answerId">
+                                                {{k.answer}}
+                                        </option>
+                                            <option [value]="0"> N/A </option>
+                                    </select>
+                                    
+                                </div>
+                                <!-- <div class="alert-danger" *ngIf="selectAnswerForm.touched && !selectAnswerForm.valid">Required Field</div> -->
+                               
+                               
+                                <!-- <div  class="form-group col-md-4">
+                                    <input required #file #fileUploadForm="ngModel" type="file" ngModel name="{{z}}+{{j.questionId}}" id="{{z}}+{{j.questionId}}"
+                                    class="form-control" (change)="uploadFile($event.target.files, i.checklistId, j.questionId,fileUploadForm)">
+                                </div> -->
+                                <div   class="form-group col-md-4">
+                                    <input  #file #fileUploadForm="ngModel" type="file" [(ngModel)]="j.selectedDocument" name="{{z}}+{{j.questionId}}" id="{{z}}+{{j.questionId}}"
+                                    class="form-control" (change)="uploadFile($event.target.files, i.checklistId, j.questionId,fileUploadForm)">
+                                </div>
+
+                                <div class="form-group" *ngIf="j.checklistIdToShowDownloadButton">
+                                    <button class="form-control" class="fas fa-download" 
+                                    #fileDownloadForm="ngModel"
+                                    ngDefaultControl 
+                                    [(ngModel)]="j.checklistId" (click)="downloadFile(j.checklistIdToShowDownloadButton)"
+                                    name="{{z}}+{{j.questionId}}D" id="{{z}}+{{j.questionId}}"></button>
+
+                                    <div class="form-group" #showDownloadButtonandFileName="ngModel" class="form-control" 
+                                    [(ngModel)]="j.fileNameToShowOnDownloadButton"
+                                    [ngModelOptions]="{standalone: true}" ngDefaultControl
+                                     style="color: teal;">
+                                        <b>You had Uploaded  -- "{{j.fileNameToShowOnDownloadButton}}""
+                                    </b></div>
+                                </div>
+
+                                <!-- <div class="alert-danger" *ngIf="fileUploadForm.touched && !fileUploadForm.valid"> File upload Mandatory</div> -->
+                        </div>
+
+                        <!--Comment-->
+                        <div class="form-row">
+                                <div class="form-group col-md-8">
+                                    <input style="width: 80%;"type="text" class="form-control"  placeholder="Enter comment">
+                                </div>
+                        </div>
+                      <br>
+                                
+            </div>
+    
+           
+        </div> 
+    
+    
+    
+    
+    
+    <button  (click)="onSaveDraft()"
+        style="align-content: center;margin-top: 5%;margin-left: 45%;margin-bottom: 5%;">Save Draft</button>
+        
+        <button  (click)="onsubmit()" [disabled]="!checklistForm.form.valid"
+        style="align-content: center;margin-top: 5%;margin-left: 1%;">Submit</button>
+    
+    </div>
+    </form>
+ 
